@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-a-sketch</title>
+
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./script.js" defer></script>
+    <script src="https://kit.fontawesome.com/2a8f1190a7.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <input type="checkbox" name="dark-mode-checkbox" id="dark-mode-checkbox" />
+        <label for="dark-mode-checkbox" class="mode">
+            <svg class="sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="Environment / Sun">
+                <path id="Vector" d="M12 4V2M12 20V22M6.41421 6.41421L5 5M17.728 17.728L19.1422 19.1422M4 12H2M20 12H22M17.7285 6.41421L19.1427 5M6.4147 17.728L5.00049 19.1422M12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 14.7614 14.7614 17 12 17Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                </svg>
+
+            <svg class="moon" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                <title>moon [#114]</title>
+                <desc>Created with Sketch.</desc>
+                <defs>
+
+            </defs>
+                <g id="Page-1" stroke="none" stroke-width="1">
+                    <g id="Dribbble-Light-Preview" transform="translate(-220.000000, -7719.000000)">
+                        <g id="icons" transform="translate(56.000000, 160.000000)">
+                            <path d="M173.99029,7576.998 C171.388688,7576.998 169.058358,7575.74775 167.591892,7573.8028 C174.222522,7575.15916 180.17047,7569.27528 178.803103,7562.59159 C180.748048,7564.05806 181.998298,7566.38839 181.998298,7568.98999 C181.998298,7573.40541 178.405705,7576.998 173.99029,7576.998 M174.610911,7559 C176.076376,7560.36937 176.993293,7562.32032 176.993293,7564.48549 C176.993293,7571.32432 168.608909,7574.54254 164.0003,7569.60961 C164.32062,7574.84985 168.66997,7579 173.99029,7579 C179.518819,7579 184.0003,7574.51852 184.0003,7568.98999 C184.0003,7563.66967 179.85015,7559.32032 174.610911,7559" id="moon-[#114]">
+
+            </path>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </label>
+    </div>
+
+    <h1>Etch-a-sketch</h1>
+
+    <div class="container">
+
+        <div class="main">
+
+            <div class="grid-color-eraser">
+
+                <div class="grid" id="grid"></div>       <!-- Dynamically set with js -->
+
+                <div class="color-eraser-container">
+                    <div class="color-picker-container">
+                        <input type="color" name="colors" id="colors">      <!-- JS -->
+                    </div>
+
+                    <div class="rubber">
+                        <i class="fa-solid fa-eraser" id="eraser"></i>       <!-- JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="resizer">
+                <i class="fa-solid fa-minus" id="decrease"></i>     <!-- JS -->
+
+                <div class="range-container">
+                    <input class="resize-slider" type="range" name="resize-slider" id="resize-slider" min="8" max="100">
+                    <label class="resize-slider-label" for="resize-slider"></label>      <!-- Dynamically set with javascript -->
+                </div>
+
+                <i class="fa-solid fa-plus" id="increase"></i>      <!-- JS -->
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <div class="rainbow">
+                <button id="rainbow">Rainbow Mode</button>
+            </div>
+
+            <div class="darken">
+                <button id="darken">Darken Mode</button>
+            </div>
+
+            <div class="lighten">
+                <button id="lighten">Lighten</button>
+            </div>
+
+            <div class="reset">
+                <button id="reset">Reset</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
