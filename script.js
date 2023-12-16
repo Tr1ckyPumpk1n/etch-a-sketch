@@ -1,5 +1,6 @@
 let gridSize = 16;
 let gridLines = false;
+let rainbow = 0;
 let darkMode = localStorage.getItem('darkMode');
 const modes = {
     color: false,
@@ -13,7 +14,7 @@ const body = document.querySelector('body');
 const gridContainer = document.querySelector('#grid');
 const darkModeCheckbox = document.querySelector("#dark-mode-checkbox");
 const colorPicker = document.querySelector('#colors');
-const eraserIcon = document.querySelector('#eraser');
+const eraserContainer = document.querySelector('.rubber');
 const rainbowButton = document.querySelector('#rainbow');
 const darkenButton = document.querySelector('#darken');
 const lightenButton = document.querySelector('#lighten');
@@ -24,8 +25,6 @@ const resizeSliderLabel = document.querySelector('.resize-slider-label');
 const sliderIncrease = document.querySelector('#increase');
 const sliderDecrease = document.querySelector('#decrease');
 
-const getColor = colorInitializer();
-
 
 // Last user-preference for darkmode
 
@@ -33,14 +32,16 @@ function enableDarkMode () {
     localStorage.setItem('darkMode', 'enabled');
 
     darkModeCheckbox.checked = true;
-    body.classList.add('dark-mode');
+    body.classList.add('body-dark-mode');
+    gridContainer.classList.add('grid-dark-mode');
 }
 
 function disableDarkMode () {
     localStorage.setItem('darkMode', null);
 
     darkModeCheckbox.checked = false;
-    body.classList.remove('dark-mode');
+    body.classList.remove('body-dark-mode');
+    gridContainer.classList.remove('grid-dark-mode');
 }
 
 function createGrid (size) {
@@ -82,36 +83,29 @@ function enableTransitions () {
     body.style.setProperty('--transition-time', '0.4s');
 }
 
-function colorInitializer () {
-    const colorMode = {
-        initial: getComputedStyle(gridContainer).color,
-        rainbow: 0,
-    };
+function getColor (pick, currentColor) {
+    let RGBArray = currentColor.split('(')[1].split(')')[0].split(',');
+    let r = +RGBArray[0];
+    let g = +RGBArray[1];
+    let b = +RGBArray[2];
+    let tenPercent = (255 * 0.1);
 
-    return function (pick, currentColor) {
-        let RGBArray = currentColor.split('(')[1].split(')')[0].split(',');
-        let r = +RGBArray[0];
-        let g = +RGBArray[1];
-        let b = +RGBArray[2];
-        let tenPercent = (255 * 0.1);
-
-        if (!pick) return colorMode.initial;
-        else if (pick === 'color') return colorPicker.value;
-        else if (pick === 'rainbow') {
-            colorMode.rainbow = (colorMode.rainbow + 8) % 360;
-            return `hsl(${colorMode.rainbow}, 100%, 50%)`;
-        }
-        else if (pick === 'darken') {
-            return `rgb(${r - tenPercent}, ${g - tenPercent}, ${b - tenPercent})`;
-        }
-        else if (pick === 'lighten') {
-            return `rgb(${r + tenPercent}, ${g + tenPercent}, ${b + tenPercent})`;
-        }
-        else if (pick === 'eraser') {
-            return getComputedStyle(gridContainer).backgroundColor;
-        }
-    };
-}
+    if (!pick) return getComputedStyle(gridContainer).color;
+    else if (pick === 'color') return colorPicker.value;
+    else if (pick === 'rainbow') {
+        rainbow = (rainbow + 8) % 360;
+        return `hsl(${rainbow}, 100%, 50%)`;
+    }
+    else if (pick === 'darken') {
+        return `rgb(${r - tenPercent}, ${g - tenPercent}, ${b - tenPercent})`;
+    }
+    else if (pick === 'lighten') {
+        return `rgb(${r + tenPercent}, ${g + tenPercent}, ${b + tenPercent})`;
+    }
+    else if (pick === 'eraser') {
+        return 'inherit';
+    }
+};
 
 function toggleGridLines (incoming) {
     const tiles = document.querySelectorAll('.tile');
@@ -130,13 +124,20 @@ function toggleGridLines (incoming) {
         if (incoming) return;
         gridLines = false;
     }
-    else gridLines = true;
+    else {
+        gridLines = true;
+    }
 }
 
 function resetModes () {
     for (let mode in modes) {
         modes[mode] = false;
     }
+
+    [ rainbowButton, darkenButton, lightenButton, eraserContainer ].forEach( button => {
+        button.classList.remove('active-button');
+    });
+
     colorPicker.classList.add('color-picker-default');
 }
 
@@ -227,26 +228,32 @@ sliderDecrease.addEventListener('click', () => {
 
 toggleGridLinesButton.addEventListener('click', () => {
     toggleGridLines();
+    if (gridLines) toggleGridLinesButton.classList.add('active-button');
+    else toggleGridLinesButton.classList.remove('active-button');
 });
 
 rainbowButton.addEventListener('click', () => {
     resetModes();
     modes.rainbow = true;
+    rainbowButton.classList.add('active-button');
 });
 
 darkenButton.addEventListener('click', () => {
     resetModes();
     modes.darken = true;
+    darkenButton.classList.add('active-button');
 });
 
 lightenButton.addEventListener('click', () => {
     resetModes();
     modes.lighten = true;
+    lightenButton.classList.add('active-button');
 });
 
-eraserIcon.addEventListener('click', () => {
+eraserContainer.addEventListener('click', () => {
     resetModes();
     modes.eraser = true;
+    eraserContainer.classList.add('active-button');
 });
 
 

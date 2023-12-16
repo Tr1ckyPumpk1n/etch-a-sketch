@@ -48,29 +48,29 @@
 
             <div class="grid-color-eraser">
 
-                <div class="grid" id="grid"></div>       <!-- Dynamically set with js -->
+                <div class="grid" id="grid"></div>
 
                 <div class="color-eraser-container">
                     <div class="color-picker-container">
-                        <input type="color" name="colors" id="colors">      <!-- JS -->
+                        <input class="color-picker-default" type="color" name="colors" id="colors">
                     </div>
 
                     <div class="rubber">
-                        <i class="fa-solid fa-eraser" id="eraser"></i>       <!-- JS -->
+                        <i class="fa-solid fa-eraser" id="eraser"></i>
                     </div>
                 </div>
 
             </div>
 
             <div class="resizer">
-                <i class="fa-solid fa-minus" id="decrease"></i>     <!-- JS -->
+                <i class="fa-solid fa-minus" id="decrease"></i>
 
                 <div class="range-container">
-                    <input class="resize-slider" type="range" name="resize-slider" id="resize-slider" min="8" max="100">
-                    <label class="resize-slider-label" for="resize-slider"></label>      <!-- Dynamically set with javascript -->
+                    <input class="resize-slider" type="range" name="resize-slider" id="resize-slider" min="4" max="64" value="16">
+                    <label class="resize-slider-label" for="resize-slider">16 x 16</label>
                 </div>
 
-                <i class="fa-solid fa-plus" id="increase"></i>      <!-- JS -->
+                <i class="fa-solid fa-plus" id="increase"></i>
             </div>
 
         </div>
@@ -85,11 +85,15 @@
             </div>
 
             <div class="lighten">
-                <button id="lighten">Lighten</button>
+                <button id="lighten">Lighten Mode</button>
+            </div>
+
+            <div class="lines">
+                <button id="toggle-grid-lines">Toggle Grid-lines</button>
             </div>
 
             <div class="reset">
-                <button id="reset">Reset</button>
+                <button id="reset">Clear</button>
             </div>
         </div>
     </div>
