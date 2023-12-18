@@ -1,7 +1,7 @@
 let gridSize = 16;
 let gridLines = false;
 let rainbow = 0;
-let darkMode = localStorage.getItem('darkMode');
+let darkMode = localStorage.getItem('darkMode');        // Last user-preference for darkmode. Doesn't store in form of cookies or anything, only stores locally in browser
 const modes = {
     color: false,
     rainbow: false,
@@ -11,6 +11,7 @@ const modes = {
 };
 
 const body = document.querySelector('body');
+const allContainer = document.querySelector('.container');
 const gridContainer = document.querySelector('#grid');
 const darkModeCheckbox = document.querySelector("#dark-mode-checkbox");
 const colorPicker = document.querySelector('#colors');
@@ -24,28 +25,36 @@ const resizeSlider = document.querySelector('#resize-slider');
 const resizeSliderLabel = document.querySelector('.resize-slider-label');
 const sliderIncrease = document.querySelector('#increase');
 const sliderDecrease = document.querySelector('#decrease');
+const risingSun = document.querySelector('.rising-sun');
+const risingMoon = document.querySelector('.rising-moon');
 
-
-// Last user-preference for darkmode
 
 function enableDarkMode () {
-    localStorage.setItem('darkMode', 'enabled');
+    localStorage.setItem('darkMode', 'enabled');        // Storing user's dark mode preference for next page load
 
-    darkModeCheckbox.checked = true;
+    darkModeCheckbox.checked = true;                // Activating dark mode checbox to trigger the switching to dark mode
     body.classList.add('body-dark-mode');
+    allContainer.classList.add('container-dark-mode');
     gridContainer.classList.add('grid-dark-mode');
+
+    risingMoon.classList.add('fly-up');
+    risingSun.classList.remove('fly-up');
 }
 
 function disableDarkMode () {
-    localStorage.setItem('darkMode', null);
+    localStorage.setItem('darkMode', null);        // Storing user's dark mode preference for next page load
 
-    darkModeCheckbox.checked = false;
+    darkModeCheckbox.checked = false;               // Activating dark mode checbox to trigger the switching to light mode
     body.classList.remove('body-dark-mode');
+    allContainer.classList.remove('container-dark-mode');
     gridContainer.classList.remove('grid-dark-mode');
+
+    risingMoon.classList.remove('fly-up');
+    risingSun.classList.add('fly-up');
 }
 
 function createGrid (size) {
-    const tileSize = ((gridContainer.clientWidth / size) / gridContainer.clientHeight) * 100;
+    const tileSize = ((gridContainer.clientWidth / size) / gridContainer.clientHeight) * 100;       // Get individual 'div' size making it possible to fit all required divs in grid
 
     let newGrid = [];
     for (let i = 0 ; i < size ; i++) {
@@ -69,7 +78,7 @@ function createGrid (size) {
         }
     }
 
-    gridContainer.replaceChildren(...newGrid);
+    gridContainer.replaceChildren(...newGrid);              // In case of grid change no need to remove every div one by one, replace them instead
     if (gridLines) toggleGridLines(true);
 }
 
@@ -84,7 +93,7 @@ function enableTransitions () {
 }
 
 function getColor (pick, currentColor) {
-    let RGBArray = currentColor.split('(')[1].split(')')[0].split(',');
+    let RGBArray = currentColor.split('(')[1].split(')')[0].split(',');             // Getting computed style color returns a string in 'rgb(r,g,b)' format
     let r = +RGBArray[0];
     let g = +RGBArray[1];
     let b = +RGBArray[2];
@@ -180,11 +189,11 @@ darkModeCheckbox.addEventListener('change', event => {
 });
 
 let prevDiv = null;
-gridContainer.addEventListener('touchmove', event => {
+gridContainer.addEventListener('touchmove', event => {                  // On grid container because 'touchmove' doesn't work as required if put on individual divs
     for (let i = 0 ; i < event.changedTouches.length ; i++) {
         let pX = event.changedTouches[i].pageX;
         let pY = event.changedTouches[i].pageY;
-        let div = document.elementFromPoint(pX, pY);
+        let div = document.elementFromPoint(pX, pY);                    // Getting individual div/element inside container from the location X/Y recieved from grid container
 
         if (div === prevDiv) return;
         prevDiv = div;
@@ -197,11 +206,11 @@ gridContainer.addEventListener('touchend', () => {
     prevDiv = null;
 });
 
-resizeSlider.addEventListener('change', event => {
+resizeSlider.addEventListener('change', event => {              // Only recreate grid when the user has surely selected a value not while dragging the slider
     updateGrid(+event.target.value);
 });
 
-resizeSlider.addEventListener('input', event => {
+resizeSlider.addEventListener('input', event => {                                           // Update the grid size numbers in real time
     resizeSliderLabel.textContent = `${event.target.value} x ${event.target.value}`;
 });
 
@@ -259,11 +268,11 @@ eraserContainer.addEventListener('click', () => {
 
 // Start
 
-if (darkMode === 'enabled') {
+if (darkMode === 'enabled') {               // On page load apply user's lastly prefered dark mode without transitions
     enableDarkMode();
 } else {
     disableDarkMode();
 }
 
-createGrid(gridSize);
+createGrid(gridSize);                       // Default 16 x 16 grid
 enableTransitions();
